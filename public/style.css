@@ -1,0 +1,37 @@
+body {
+    margin: 0;
+    background-color: #c5fafa;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: repeat(2, 400px, 400px);
+    grid-template-rows: repeat(2, 800px, 400px);
+}
+
+.main-title {
+    display: grid;
+    justify-self: start;
+    font-family: "Archivo Black", sans-serif;
+    font-size: 70px;
+    margin-left: 20px;
+}
+
+.main-paragraph {
+    font-family: "Archivo Narrow", sans-serif;
+    font-size: 36px;
+    max-width: 500px;
+    margin-left: 20px;
+}
+
+.user-input {
+    margin-left: 20px;
+    margin-bottom: 30px;
+}
+
+canvas {
+    background-color: white;
+}
+
+/* font-family: "Archivo Narrow", sans-serif;
+font-family: "Archivo", sans-serif; */
