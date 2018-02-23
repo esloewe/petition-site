@@ -14,6 +14,11 @@ exports.insertNewSignature = function(firstname, lastname, signature) {
         });
 };
 
-exports.signedSession = function(id) {
-    return db.query("SELECT id FROM signatures VALUES (id = $1)", [id]);
+exports.getSignatureById = function(id) {
+    return db
+        .query("SELECT signature FROM signatures WHERE id = $1", [id])
+        .then(function(results) {
+            console.log("fdbfber", results.rows[0].signature);
+            return results.rows[0].signature;
+        });
 };
