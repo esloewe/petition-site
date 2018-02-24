@@ -4,16 +4,20 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const cookieSession = require("cookie-session");
 const handlebars = require("express-handlebars");
-const fs = require("fs");
 const { insertNewSignature } = require("./database");
 const { getSignatureById } = require("./database");
+const { signersCount } = require("./database");
+const { signersNames } = require("./database");
+const { registration } = require("./database");
+const { checkPass } = require("./database");
+const { existsEmail } = require("./database");
+const { hashPassword } = require("./hashPass");
+const { checkPassword } = require("./hashPass");
 const bcrypt = require("bcryptjs");
 
 app.engine("handlebars", handlebars());
 app.set("view engine", "handlebars");
-
 app.use(bodyParser.urlencoded({ extended: false }));
-
 app.use(cookieParser());
 
 app.use(
@@ -24,7 +28,7 @@ app.use(
 );
 
 app.use(express.static(__dirname + "/public"));
-
+console.log("1");
 app.get("/petition", (req, res) => {
     if (req.session.signatureId) {
         res.redirect("/thankyou");
@@ -35,19 +39,97 @@ app.get("/petition", (req, res) => {
     });
 });
 
+app.get("/register", (req, res) => {
+    res.render("registration", {
+        layout: "layouts"
+    });
+});
+
+app.get("/login", (req, res) => {
+    res.render("login", {
+        layout: "layouts"
+    });
+});
+
 app.get("/thankyou", (req, res) => {
     getSignatureById(req.session.signatureId).then(results => {
-        res.render("thankyou-page", {
-            layout: "layouts",
-            yourSignature: results
+        signersCount().then(count => {
+            res.render("thankyou-page", {
+                layout: "layouts",
+                yourSignature: results,
+                totalSigners: count
+            });
         });
     });
 });
 
-app.get("/signerslist", (req, res) => {
-    res.render("signerslist", {
-        layout: "layouts"
+app.get("/signers", (req, res) => {
+    signersNames().then(results => {
+        console.log("signers name", results);
+        res.render("signerslist", {
+            layout: "layouts",
+            signerslist: results
+        });
     });
+});
+
+app.post("/register", (req, res) => {
+    if (
+        !req.body.firstname ||
+        !req.body.lastname ||
+        !req.body.email ||
+        !req.body.password
+    ) {
+        res.render("registration", {
+            layout: "layouts",
+            error: "error"
+        });
+    } else {
+        let hash = hashPassword(req.body.password);
+        console.log(hash);
+        hash
+            .then(function(hash) {
+                return registration(
+                    req.body.firstname,
+                    req.body.lastname,
+                    req.body.email,
+                    hash
+                );
+            })
+            .then(results => {
+                req.session.user = {
+                    id: results.rows[0].id,
+                    firstname: results.rows[0].firstname,
+                    lasname: results.rows[0].lastname
+                };
+                res.redirect("/login");
+            })
+            .catch(function(error) {
+                console.log(error);
+                res.render("main", {
+                    layout: "layouts",
+                    error: "error"
+                });
+            });
+    }
+});
+
+app.post("/login", (req, res) => {
+    if (!req.body.email || !req.body.password) {
+        res.render("login", {
+            layout: "layouts",
+            error: "error"
+        });
+    } else {
+        existsEmail(req.body.email).then(results => {
+            req.session.user = {
+                id: results.rows[0].id,
+                firstname: results.rows[0].firstname,
+                lasname: results.rows[0].lastname
+            };
+            res.redirect("/petition");
+        });
+    }
 });
 
 app.post("/petition", (req, res) => {
@@ -64,6 +146,7 @@ app.post("/petition", (req, res) => {
             req.body.signature
         )
             .then(function(id) {
+                console.log("siggg");
                 req.session.signatureId = id;
                 res.redirect("/thankyou");
             })
@@ -76,7 +159,7 @@ app.post("/petition", (req, res) => {
             });
     }
 });
-
+console.log("5");
 app.listen(8080, () => {
     console.log("listening");
 });

@@ -1,0 +1,15 @@
+
+<h1>Register here</h1>
+
+<form Method="POST" class="user-input">
+    {{#if error}}
+    <h2>{{> error-page}}</h2>
+    {{/if}}
+<input type="text" name="firstname" placeholder="First Name"value="">
+<input type="text" name="lastname" placeholder="Last Name"value="">
+<input type="text" placeholder="email" name="email" value="">
+<input type="password" placeholder="password" name="password" value="">
+<button id= "sign-up"> sign up </button>
+</form>
+
+<h4> are you already a member? please login  <a href="/login">here</a> </h4>

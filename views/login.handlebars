@@ -1,0 +1,10 @@
+<h1>Please Login</h1>
+
+<form Method="POST" class="user-input">
+    {{#if error}}
+    <h2>{{> error-page}}</h2>
+    {{/if}}
+<input type="text" placeholder="email" name="email" value="">
+<input type="password" placeholder="password" name="password" value="">
+<button id= "login"> login </button>
+</form>
