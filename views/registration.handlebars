@@ -1,15 +1,17 @@
+<div class="container-register">
+    <h1 class='main-title'>Tell me more about my clothes...</h1>
+    <h2 class='register-title2'>a petition for change, transparency and awareness in the fashion business. Join the revolution.</h2>
 
-<h1>Register here</h1>
+    <form Method="POST" class="user-input-register">
+        {{#if error}}
+        <h2>{{> error-page}}</h2>
+        {{/if}}
 
-<form Method="POST" class="user-input">
-    {{#if error}}
-    <h2>{{> error-page}}</h2>
-    {{/if}}
-<input type="text" name="firstname" placeholder="First Name"value="">
-<input type="text" name="lastname" placeholder="Last Name"value="">
-<input type="text" placeholder="email" name="email" value="">
-<input type="password" placeholder="password" name="password" value="">
-<button id= "sign-up"> sign up </button>
-</form>
-
-<h4> are you already a member? please login  <a href="/login">here</a> </h4>
+        <input type="text" name="firstname" placeholder="First Name"value="">
+        <input type="text" name="lastname" placeholder="Last Name"value="">
+        <input type="text" placeholder="email" name="email" value="">
+        <input type="password" placeholder="password" name="password" value="">
+        <button id= "signUp"> sign up </button>
+        <h4 class="member"> are you already a member? please login  <a href="/login">here</a> </h4>
+    </form>
+</div>

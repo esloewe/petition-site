@@ -49,20 +49,11 @@ exports.registration = function(first_name, last_name, email, password_hash) {
         });
 };
 
-exports.checkPass = function(password_hash) {
+exports.checkPass = function(email) {
     return db
-        .query("SELECT * FROM users WHERE password_hash = $1", [password_hash])
+        .query("SELECT * FROM users WHERE password_hash = $1", [email])
         .then(function(results) {
             console.log("cheking pass", results.rows);
             return results.rows[0];
-        });
-};
-
-exports.existsEmail = function(email) {
-    return db
-        .query("SELECT COUNT(*) FROM users WHERE email = $1", [email])
-        .then(function(results) {
-            console.log("cheking exist email", results.rows);
-            return results.rows;
         });
 };

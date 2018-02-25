@@ -10,7 +10,6 @@ const { signersCount } = require("./database");
 const { signersNames } = require("./database");
 const { registration } = require("./database");
 const { checkPass } = require("./database");
-const { existsEmail } = require("./database");
 const { hashPassword } = require("./hashPass");
 const { checkPassword } = require("./hashPass");
 const bcrypt = require("bcryptjs");
@@ -86,7 +85,6 @@ app.post("/register", (req, res) => {
         });
     } else {
         let hash = hashPassword(req.body.password);
-        console.log(hash);
         hash
             .then(function(hash) {
                 return registration(
@@ -106,7 +104,7 @@ app.post("/register", (req, res) => {
             })
             .catch(function(error) {
                 console.log(error);
-                res.render("main", {
+                res.render("registration", {
                     layout: "layouts",
                     error: "error"
                 });
@@ -121,7 +119,7 @@ app.post("/login", (req, res) => {
             error: "error"
         });
     } else {
-        existsEmail(req.body.email).then(results => {
+        checkPass(req.body.password).then(results => {
             req.session.user = {
                 id: results.rows[0].id,
                 firstname: results.rows[0].firstname,
@@ -134,7 +132,6 @@ app.post("/login", (req, res) => {
 
 app.post("/petition", (req, res) => {
     if (!req.body.firstname || !req.body.lastname || !req.body.signature) {
-        // here add the req.body.password
         res.render("main", {
             layout: "layouts",
             error: "error"

@@ -1,36 +1,187 @@
 body {
     margin: 0;
-    background-color: #c5fafa;
 }
+
+/* petition page */
 
 .container {
     display: grid;
-    grid-template-columns: repeat(2, 400px, 400px);
-    grid-template-rows: repeat(2, 800px, 400px);
+    grid-template-columns: 1fr 1fr;
+    margin-left: 180px;
+    margin-top: 50px;
+    height: 100%;
+    grid-template-areas:
+        "main-title main-title"
+        "main-paragraph user-input";
 }
 
 .main-title {
-    display: grid;
-    justify-self: start;
-    font-family: "Archivo Black", sans-serif;
-    font-size: 70px;
-    margin-left: 20px;
+    /* grid-column: 1 / -1; */
+    grid-area: main-title;
+    text-transform: uppercase;
+    font: 56px "Kanit", sans-serif;
+    font-weight: bold;
+    margin-left: 25px;
+    margin-top: 60px;
 }
 
 .main-paragraph {
-    font-family: "Archivo Narrow", sans-serif;
-    font-size: 36px;
-    max-width: 500px;
-    margin-left: 20px;
+    margin-top: 30px;
+    grid-area: main-paragraph;
+    font-family: "Open Sans", sans-serif;
+    font-size: 20px;
+    max-width: 600px;
+    margin-left: 40px;
+    align-items: center;
+    justify-content: center;
 }
 
-.user-input {
-    margin-left: 20px;
-    margin-bottom: 30px;
+.user-input-petition {
+    grid-area: user-input;
+    margin-top: 30px;
+    width: 200px;
+    align-self: center;
+    margin-left: 60px;
+    align-items: center;
+    justify-content: center;
+    font-family: "Open Sans", sans-serif;
+}
+input {
+    width: 200px;
+    margin-bottom: 14px;
+    font-size: 20px;
+    color: #afafaf;
 }
 
 canvas {
     background-color: white;
+    margin-bottom: 30px;
+    border: 2px dotted #afafaf;
 }
 
-/* font-family: "Archivo", sans-serif */
+button {
+    width: 150px;
+    height: 40px;
+    font-size: 16px;
+    background: #ff00ff;
+    text-decoration: none;
+    text-shadow: none;
+    letter-spacing: 1.5px;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    color: white;
+    font-family: "Open Sans", sans-serif;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #00ffff;
+}
+small {
+    color: #afafaf;
+    font-family: "Open Sans", sans-serif;
+}
+
+/* login page */
+
+.container-login {
+    display: grid;
+    place-items: center center;
+    margin-top: 200px;
+}
+
+.headerLogin {
+    font-family: "Open Sans", sans-serif;
+    font-size: 36px;
+}
+.user-input-login {
+    width: 300px;
+    margin-left: 90px;
+    align-self: center;
+}
+
+form:focus,
+input:focus {
+    color: black;
+}
+
+#loginButton {
+    margin-left: 27px;
+}
+
+/* registration */
+
+.container-register {
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: auto;
+    /* margin-left: 180px;
+    margin-top: 50px; */
+    justify-content: center;
+    align-items: center;
+    grid-template-areas:
+        "main-title"
+        "register-title2"
+        "user-input-register";
+}
+
+.register-title2 {
+    grid-area: register-title2;
+    text-align: center;
+    font: 22px "Open Sans", sans-serif;
+}
+
+.user-input-register {
+    grid-area: user-input-register;
+    width: 200px;
+    height: 400px;
+    margin-top: 50px;
+    margin-left: 400px;
+}
+
+.member {
+    grid-area: footer;
+    font: 14px "Open Sans", sans-serif;
+}
+
+#signUp {
+    width: 200px;
+    text-align: center;
+    margin-left: 2px;
+}
+
+/* signers list page */
+
+.containerSigners {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+}
+
+.signersTitle {
+    font-family: "Open Sans", sans-serif;
+    font-weight: bolder;
+    text-transform: uppercase;
+    margin-left: 30px;
+}
+
+.listSigners {
+    font-family: "Open Sans", sans-serif;
+    font-size: 16px;
+    margin-left: 30px;
+}
+
+.mainTitleinSigners {
+    text-transform: uppercase;
+    font: 56px "Kanit", sans-serif;
+    font-weight: bold;
+    margin-left: 25px;
+    margin-top: 60px;
+}
+
+/* error */
+#error {
+    color: red;
+    font-family: "Roboto Mono", monospace;
+}

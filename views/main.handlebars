@@ -2,19 +2,22 @@
 <div class="container">
 
     <h1 class='main-title'>Tell me more about my clothes...</h1>
-    <p class='main-paragraph'>This petition was made to ask the bigger player in fast-fashion to be more transparent about how the clothes they sell are really made and give full disclosure of every step of the process by adding an extra tag in the item sharing with the consumer the story of how that specific piece of clothing was made and who made it providing transparent information. The consumer wants to know more, but we do not ask for more green washing.</p>
+    <div class="main-paragraph">
+        <p>We ask the big players in fast-fashion to provide transparency by disclosing supplier information as well as the journey
+        about how the products were made and which players were involved. How? by integrating an extra tag in each piece of clothing disclosing these information to the purchaser of the product.</p>
+        <p>The end goal is to educate consumers about how products are made and ultimately close the loop of  the product lifecycle.</p>
+    </div>
     {{#if error}}
     <h2>{{> error-page}}</h2>
     {{/if}}
-    <form Method="POST" class="user-input">
+    <form Method="POST" class="user-input-petition">
     <input type="text" name="firstname" placeholder="First Name"value="">
     <input type="text" name="lastname" placeholder="Last Name"value="">
     <input id= "canvasDataSave" type="hidden" name="signature" value="">
-    <canvas id="canvas-sign" width="500" height="100"></canvas>
+    <small>signature</small>
+    <canvas id="canvas-sign" width="203" height="100"></canvas>
     <button id= "sign-petition"> sign petition </button>
     </form>
-
-
 </div>
 
 <script src="http://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
