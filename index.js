@@ -9,7 +9,10 @@ const { getSignatureById } = require("./database");
 const { signersCount } = require("./database");
 const { signersNames } = require("./database");
 const { registration } = require("./database");
-const { checkPass } = require("./database");
+const { getUserData } = require("./database");
+const { checkForEmailAndGetHashedPass } = require("./database");
+const { getUserProfile } = require("./database");
+const { insertUserProfile } = require("./database");
 const { hashPassword } = require("./hashPass");
 const { checkPassword } = require("./hashPass");
 const bcrypt = require("bcryptjs");
@@ -27,16 +30,6 @@ app.use(
 );
 
 app.use(express.static(__dirname + "/public"));
-console.log("1");
-app.get("/petition", (req, res) => {
-    if (req.session.signatureId) {
-        res.redirect("/thankyou");
-        return;
-    }
-    res.render("main", {
-        layout: "layouts"
-    });
-});
 
 app.get("/register", (req, res) => {
     res.render("registration", {
@@ -45,7 +38,25 @@ app.get("/register", (req, res) => {
 });
 
 app.get("/login", (req, res) => {
+    //todo
+    //check if there is req.session.user if yes redirect to petition page if not then let them login
     res.render("login", {
+        layout: "layouts"
+    });
+});
+
+app.get("/profile", (req, res) => {
+    res.render("profile", {
+        layouts: "layouts"
+    });
+});
+
+app.get("/petition", (req, res) => {
+    if (req.session.signatureId) {
+        res.redirect("/thankyou");
+        return;
+    }
+    res.render("main", {
         layout: "layouts"
     });
 });
@@ -86,7 +97,7 @@ app.post("/register", (req, res) => {
     } else {
         let hash = hashPassword(req.body.password);
         hash
-            .then(function(hash) {
+            .then(hash => {
                 return registration(
                     req.body.firstname,
                     req.body.lastname,
@@ -94,15 +105,19 @@ app.post("/register", (req, res) => {
                     hash
                 );
             })
-            .then(results => {
+            .then(userId => {
+                console.log(userId);
                 req.session.user = {
-                    id: results.rows[0].id,
-                    firstname: results.rows[0].firstname,
-                    lasname: results.rows[0].lastname
+                    id: userId,
+                    firstname: req.body.firstname,
+                    lastname: req.body.lastname
                 };
-                res.redirect("/login");
+
+                console.log(req.session);
+
+                res.redirect("/petition");
             })
-            .catch(function(error) {
+            .catch(error => {
                 console.log(error);
                 res.render("registration", {
                     layout: "layouts",
@@ -112,6 +127,17 @@ app.post("/register", (req, res) => {
     }
 });
 
+app.post("/profile", (req, res) => {
+    getUserProfile(
+        +req.body.age,
+        req.body.city,
+        req.body.homepage,
+        req.session.id
+    ).then(function() {
+        res.redirect("/petition");
+    }); // do error catch stuff;
+});
+
 app.post("/login", (req, res) => {
     if (!req.body.email || !req.body.password) {
         res.render("login", {
@@ -119,13 +145,31 @@ app.post("/login", (req, res) => {
             error: "error"
         });
     } else {
-        checkPass(req.body.password).then(results => {
-            req.session.user = {
-                id: results.rows[0].id,
-                firstname: results.rows[0].firstname,
-                lasname: results.rows[0].lastname
-            };
-            res.redirect("/petition");
+        checkForEmailAndGetHashedPass(req.body.email).then(function(hashed) {
+            console.log("results check for email hashed pass", hashed);
+            if (!hashed) {
+                res.render("login", {
+                    layouts: "layouts",
+                    error: "email does not exist"
+                });
+            } else {
+                checkPassword(req.body.password, hashed).then(function(
+                    doesMatch
+                ) {
+                    if (doesMatch) {
+                        getUserData(req.body.email).then(function(userData) {
+                            req.session.user = {
+                                id: userData.id,
+                                firstname: userData.firstname,
+                                lastname: userData.lastname,
+                                email: userData.email
+                            };
+                            console.log("final user data", req.session.user);
+                        });
+                        res.redirect("/petition");
+                    }
+                });
+            }
         });
     }
 });
@@ -137,13 +181,8 @@ app.post("/petition", (req, res) => {
             error: "error"
         });
     } else {
-        insertNewSignature(
-            req.body.firstname,
-            req.body.lastname,
-            req.body.signature
-        )
+        insertNewSignature(req.session.user.id, req.body.signature)
             .then(function(id) {
-                console.log("siggg");
                 req.session.signatureId = id;
                 res.redirect("/thankyou");
             })
@@ -156,7 +195,7 @@ app.post("/petition", (req, res) => {
             });
     }
 });
-console.log("5");
+
 app.listen(8080, () => {
     console.log("listening");
 });

@@ -91,7 +91,7 @@ small {
     margin-top: 200px;
 }
 
-.headerLogin {
+.header-login {
     font-family: "Open Sans", sans-serif;
     font-size: 36px;
 }
@@ -106,7 +106,7 @@ input:focus {
     color: black;
 }
 
-#loginButton {
+#login-button {
     margin-left: 27px;
 }
 
@@ -145,7 +145,7 @@ input:focus {
     font: 14px "Open Sans", sans-serif;
 }
 
-#signUp {
+#sign-up {
     width: 200px;
     text-align: center;
     margin-left: 2px;
@@ -153,26 +153,26 @@ input:focus {
 
 /* signers list page */
 
-.containerSigners {
+.container-signers {
     display: grid;
     justify-content: center;
     align-items: center;
 }
 
-.signersTitle {
+.signers-title {
     font-family: "Open Sans", sans-serif;
     font-weight: bolder;
     text-transform: uppercase;
     margin-left: 30px;
 }
 
-.listSigners {
+.list-signers {
     font-family: "Open Sans", sans-serif;
     font-size: 16px;
     margin-left: 30px;
 }
 
-.mainTitleinSigners {
+.main-title-in-signers {
     text-transform: uppercase;
     font: 56px "Kanit", sans-serif;
     font-weight: bold;
@@ -180,6 +180,33 @@ input:focus {
     margin-top: 60px;
 }
 
+/* thankyou page */
+
+.container-thankyou-page {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+}
+
+.h1-thankyou {
+    text-transform: uppercase;
+    font: 56px "Kanit", sans-serif;
+    font-weight: bold;
+    /* margin-left: 25px; */
+    margin-top: 60px;
+}
+
+.signers-link {
+    font-family: "Open Sans", sans-serif;
+    font-size: 16px;
+    /* margin-left: 30px; */
+}
+
+/* profile page */
+
+.container-profile {
+    display: grid;
+}
 /* error */
 #error {
     color: red;
