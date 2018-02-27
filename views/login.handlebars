@@ -5,6 +5,11 @@
         {{#if error}}
         <h2>{{> error-page}}</h2>
         {{/if}}
+
+        {{#if error2}}
+        <h2>{{> errorNotaUser}}</h2>
+        {{/if}}
+
         <input type="text" placeholder="email" name="email" value="">
         <input type="password" placeholder="password" name="password" value="">
         <button id= "login-button"> login </button>

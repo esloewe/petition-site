@@ -30,10 +30,21 @@ exports.signersCount = function() {
 exports.signersNames = function() {
     return db
         .query(
-            "SELECT first_name, last_name FROM signatures ORDER BY first_name ASC"
+            "SELECT users.first_name, users.last_name, users_profiles.city, users_profiles.age, users_profiles.homepage FROM users INNER JOIN users_profiles ON users.id = users_profiles.id  ORDER BY users.first_name ASC"
         )
         .then(function(results) {
-            return results.rows[0].id;
+            return results.rows;
+        });
+};
+
+exports.signersNamesCity = function(city) {
+    return db
+        .query(
+            "SELECT users.first_name, users.last_name, users_profiles.city, users_profiles.age, users_profiles.homepage FROM users INNER JOIN users_profiles ON users.id = users_profiles.id WHERE LOWER(city) = LOWER($1) ORDER BY users.first_name ASC",
+            [city]
+        )
+        .then(function(results) {
+            return results.rows;
         });
 };
 
@@ -78,10 +89,64 @@ exports.getUserProfile = function(age, city, homepage, user_id) {
         });
 };
 
-exports.insertUserProfile = function() {
+exports.populateUpdateUserData = function() {
     return db
         .query(
-            "SELECT * FROM user_profiles INNER JOIN users ON users.id = user_profiles.id"
+            "SELECT users.first_name, users.last_name, users.password_hash, users.email, users_profiles.city, users_profiles.age, users_profiles.homepage FROM users JOIN users_profiles ON users.id = users_profiles.id ORDER BY users.first_name ASC"
+        )
+        .then(function(results) {
+            return results.rows[0];
+        });
+};
+
+exports.updateUserTableWithPassword = function(
+    first_name,
+    last_name,
+    email,
+    password_hash,
+    id
+) {
+    return db
+        .query(
+            `UPDATE users
+             SET (first_name = $1, last_name = $2, email = $3, password_hash = $4) WHERE id = $5`,
+            [first_name, last_name, email, password_hash, id]
+        )
+        .then(function(results) {
+            return results.rows[0];
+        });
+};
+
+exports.updateUserTableWithoutPassword = function(
+    first_name,
+    last_name,
+    email,
+    id
+) {
+    return db
+        .query(
+            `UPDATE users
+             SET (first_name = $1, last_name = $2, email = $3, password_hash = $4) WHERE id = $5`,
+            [first_name, last_name, email, id]
+        )
+        .then(function(results) {
+            return results.rows[0];
+        });
+};
+
+exports.userDataUpdateByUserinUsersProfiles = function(
+    age,
+    city,
+    homepage,
+    user_id
+) {
+    return db
+        .query(
+            `INSERT INTO users_profiles (age, city, homepage, user_id) VALUES ($1, $2, $3, $4)
+            ON CONFLICT (user_id)
+            DO UPDATE SET age = $1, city = $2, homepage = $3
+            WHERE user_id = $4`,
+            [age, city, homepage, user_id]
         )
         .then(function(results) {
             return results.rows[0];

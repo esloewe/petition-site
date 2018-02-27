@@ -4,18 +4,26 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const cookieSession = require("cookie-session");
 const handlebars = require("express-handlebars");
-const { insertNewSignature } = require("./database");
-const { getSignatureById } = require("./database");
-const { signersCount } = require("./database");
-const { signersNames } = require("./database");
-const { registration } = require("./database");
-const { getUserData } = require("./database");
-const { checkForEmailAndGetHashedPass } = require("./database");
-const { getUserProfile } = require("./database");
-const { insertUserProfile } = require("./database");
-const { hashPassword } = require("./hashPass");
-const { checkPassword } = require("./hashPass");
 const bcrypt = require("bcryptjs");
+const { hashPassword, checkPassword } = require("./hashPass");
+const {
+    insertNewSignature,
+    getSignatureById,
+    signersCount,
+    signersNames,
+    registration,
+    getUserData,
+    checkForEmailAndGetHashedPass,
+    getUserProfile,
+    signersNamesCity,
+    populateUpdateUserData,
+    updateUserTableWithPassword,
+    updateUserTableWithoutPassword,
+    userDataUpdateCheckId,
+    userDataUpdateByUserinUsersProfiles
+} = require("./database");
+
+//MIDDLEWARE
 
 app.engine("handlebars", handlebars());
 app.set("view engine", "handlebars");
@@ -31,26 +39,49 @@ app.use(
 
 app.use(express.static(__dirname + "/public"));
 
+// const alreadySigned = function(req, res, next) {
+//     if (!req.session.signatureId) {
+//         res.redirect("/petition");
+//     } else {
+//         next();
+//     }
+// };
+//
+// const checkIfLoggedIn = function(req, res, next) {
+//     if (!req.session.user) {
+//         res.redirect("/registration");
+//     } else {
+//         next();
+//     }
+// };
+
+// end MIDDLEWARE
+
+//checkIfLoggedIn
 app.get("/register", (req, res) => {
     res.render("registration", {
         layout: "layouts"
     });
 });
 
+//checkIfLoggedIn
 app.get("/login", (req, res) => {
-    //todo
-    //check if there is req.session.user if yes redirect to petition page if not then let them login
-    res.render("login", {
-        layout: "layouts"
-    });
+    if (req.session.user) {
+        res.redirect("/petition");
+    } else {
+        res.render("login", {
+            layout: "layouts"
+        });
+    }
 });
 
 app.get("/profile", (req, res) => {
     res.render("profile", {
-        layouts: "layouts"
+        layout: "layouts"
     });
 });
 
+//alreadySigned
 app.get("/petition", (req, res) => {
     if (req.session.signatureId) {
         res.redirect("/thankyou");
@@ -73,9 +104,34 @@ app.get("/thankyou", (req, res) => {
     });
 });
 
+app.get("/profile/edit", (req, res) => {
+    populateUpdateUserData().then(results => {
+        console.log("results popPPPPPPP", results);
+        res.render("profileEdit", {
+            layout: "layouts",
+            firstname: results.first_name,
+            lastname: results.last_name,
+            email: results.email,
+            password: results.password_hash,
+            age: results.age,
+            city: results.city,
+            homepage: results.homepage
+        });
+    });
+});
+
 app.get("/signers", (req, res) => {
     signersNames().then(results => {
-        console.log("signers name", results);
+        res.render("signerslist", {
+            layout: "layouts",
+            signerslist: results
+        });
+    });
+});
+
+app.get("/signers/:city", (req, res) => {
+    const city = req.params.city; // params reads the URL syntax is with : ex-> /:city and thats its the part that will change.
+    signersNamesCity(city).then(results => {
         res.render("signerslist", {
             layout: "layouts",
             signerslist: results
@@ -114,8 +170,7 @@ app.post("/register", (req, res) => {
                 };
 
                 console.log(req.session);
-
-                res.redirect("/petition");
+                res.redirect("/profile");
             })
             .catch(error => {
                 console.log(error);
@@ -132,11 +187,102 @@ app.post("/profile", (req, res) => {
         +req.body.age,
         req.body.city,
         req.body.homepage,
-        req.session.id
-    ).then(function() {
-        res.redirect("/petition");
-    }); // do error catch stuff;
+        req.session.user.id
+    )
+        .then(function() {
+            res.redirect("/petition");
+        })
+        .catch(error => {
+            console.log(error);
+            res.render("/profile", {
+                layout: "layouts",
+                error: "error"
+            });
+        });
 });
+
+app.post("/profile/edit", (req, res) => {
+    function updateUser(firstname, lastname, email, password, id) {
+        if (req.body.password) {
+            const { firstname, lastname, email } = req.body;
+            const hashPassUpdate = hashPassword(req.body.password);
+            return hashPassUpdate.then(hashPassUpdate => {
+                updateUserTableWithPassword(
+                    firstname,
+                    lastname,
+                    email,
+                    hashPassUpdate,
+                    req.session.user.id
+                );
+            });
+        } else {
+            return updateUserTableWithoutPassword(
+                firstname,
+                lastname,
+                email,
+                req.session.user.id
+            );
+        }
+    }
+    Promise.all([
+        updateUserTableWithPassword(
+            firstname,
+            lastname,
+            email,
+            hashPassUpdate,
+            req.session.user.id
+        ),
+        updateUserTableWithoutPassword(
+            firstname,
+            lastname,
+            email,
+            req.session.user.id
+        )
+    ])
+        .then(() => {
+            userDataUpdateByUserinUsersProfiles(
+                req.body.age,
+                req.body.city,
+                req.body.homepage,
+                req.session.user.id
+            );
+        })
+        .then(function() {
+            res.redirect("/thankyou");
+        });
+});
+
+//
+//
+//     if (req.body.password === "") {
+//         updateUserTableWithoutPassword(
+//         req.body.firstname,
+//         req.body.lastname,
+//         req.body.email,
+//         req.session.user.id).then(function(){
+//             userDataUpdateByUserinUsersProfiles(req.body.age, req.body.city, req.body.homepage, req.session.user.id).then(function(){
+//             res
+//             })
+//
+//
+//         })
+//         // user did not enter password
+//         // do update to users table without updating password with the new query that i will make but without the password
+//     } else {
+//         // user entered password, bro
+//         // hash first, then
+//         // in the then of hash i pass hash down though a promise do update to users table with password, bro
+//         userDataUpdateByUserinUsers(
+//             req.body.firstname,
+//             req.body.lastname,
+//             req.body.email,
+//             INEEDAHASHHERE!!!,
+//             req.session.user.id
+//         ).then(function() {});
+//     }
+//
+//     // res.redirect("/thankyou");
+// });
 
 app.post("/login", (req, res) => {
     if (!req.body.email || !req.body.password) {
@@ -146,11 +292,10 @@ app.post("/login", (req, res) => {
         });
     } else {
         checkForEmailAndGetHashedPass(req.body.email).then(function(hashed) {
-            console.log("results check for email hashed pass", hashed);
             if (!hashed) {
                 res.render("login", {
                     layouts: "layouts",
-                    error: "email does not exist"
+                    error2: "error"
                 });
             } else {
                 checkPassword(req.body.password, hashed).then(function(
@@ -164,7 +309,6 @@ app.post("/login", (req, res) => {
                                 lastname: userData.lastname,
                                 email: userData.email
                             };
-                            console.log("final user data", req.session.user);
                         });
                         res.redirect("/petition");
                     }
@@ -175,7 +319,7 @@ app.post("/login", (req, res) => {
 });
 
 app.post("/petition", (req, res) => {
-    if (!req.body.firstname || !req.body.lastname || !req.body.signature) {
+    if (!req.body.signature) {
         res.render("main", {
             layout: "layouts",
             error: "error"

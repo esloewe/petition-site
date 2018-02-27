@@ -151,6 +151,19 @@ input:focus {
     margin-left: 2px;
 }
 
+/* profile page */
+
+.container-profile {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+}
+
+#header-profile {
+    font-family: "Open Sans", sans-serif;
+    font-size: 59px;
+}
+
 /* signers list page */
 
 .container-signers {
@@ -202,13 +215,13 @@ input:focus {
     /* margin-left: 30px; */
 }
 
-/* profile page */
-
-.container-profile {
-    display: grid;
-}
-/* error */
+/* errors */
 #error {
+    color: red;
+    font-family: "Roboto Mono", monospace;
+}
+
+#error-not-a-user {
     color: red;
     font-family: "Roboto Mono", monospace;
 }
