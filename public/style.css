@@ -225,3 +225,21 @@ input:focus {
     color: red;
     font-family: "Roboto Mono", monospace;
 }
+
+/* logout */
+
+.container-logout {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    font-family: "Open Sans", sans-serif;
+    font-size: 24px;
+    text-align: center;
+    margin-top: 200px;
+}
+
+.text-logout {
+    font-family: "Open Sans", sans-serif;
+    font-size: 16px;
+    text-align: center;
+}

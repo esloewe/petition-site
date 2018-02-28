@@ -11,6 +11,7 @@
     <h2>{{> error-page}}</h2>
     {{/if}}
     <form Method="POST" class="user-input-petition">
+        <input type="hidden" name="_csrf" value="{{csrfToken}}">
         <input id= "canvasDataSave" type="hidden" name="signature" value="">
         <small>signature</small>
         <canvas id="canvas-sign" width="203" height="100"></canvas>

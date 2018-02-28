@@ -2,10 +2,11 @@
 
 <div class="container-profile-edit">
     <h2 id="header-profile-edit">Edit your profile</h2>
-    <form Method="POST" class="profile-input-edit">
         {{#if error}}
         <h2>{{> error-page}}</h2>
         {{/if}}
+    <form Method="POST" class="profile-input-edit">
+        <input type="hidden" name="_csrf" value="{{csrfToken}}">
         <input type="text" name="firstname" placeholder="firstname"value="{{firstname}}">
         <input type="text" name="lastname" placeholder="lastname"value="{{lastname}}">
         <input type="text" name="email" placeholder="email"value="{{email}}">

@@ -70,10 +70,11 @@ exports.checkForEmailAndGetHashedPass = function(email) {
 exports.getUserData = function(email) {
     return db
         .query(
-            "SELECT users.first_name, users.last_name, users.email, users.password_hash, signatures.signature FROM users INNER JOIN signatures ON users.id = signatures.user_id WHERE email = $1",
+            "SELECT users.first_name, users.last_name, users.email, users.password_hash, signatures.id, users.id AS userId FROM users LEFT JOIN signatures ON users.id = signatures.user_id WHERE email = $1",
             [email]
         )
         .then(function(results) {
+            console.log("THE RES", results);
             return results.rows[0];
         });
 };
@@ -156,5 +157,13 @@ exports.userDataUpdateByUserinUsersProfiles = function(
         .catch(error => {
             console.log("EEEERRRROOORRR");
             console.log(error);
+        });
+};
+
+exports.deleteSignature = function(id) {
+    return db
+        .query(`DELETE FROM signatures WHERE id = $1`, [id])
+        .then(function(results) {
+            return results.rows[0];
         });
 };

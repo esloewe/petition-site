@@ -21,7 +21,8 @@ const {
     updateUserTableWithPassword,
     updateUserTableWithoutPassword,
     userDataUpdateCheckId,
-    userDataUpdateByUserinUsersProfiles
+    userDataUpdateByUserinUsersProfiles,
+    deleteSignature
 } = require("./database");
 
 //MIDDLEWARE
@@ -37,26 +38,28 @@ app.use(
         maxAge: 1000 * 60 * 60 * 24 * 14
     })
 );
-//app.use(csrf());
-//or use it as middleware let csrfProtection = csrf()
-
+app.use(csrf());
+app.use(function(req, res, next) {
+    res.locals.csrfToken = req.csrfToken();
+    next();
+});
 app.use(express.static(__dirname + "/public"));
 
-// const alreadySigned = function(req, res, next) {
-//     if (!req.session.signatureId) {
-//         res.redirect("/petition");
-//     } else {
-//         next();
-//     }
-// };
-//
-// const checkIfLoggedIn = function(req, res, next) {
-//     if (!req.session.user) {
-//         res.redirect("/registration");
-//     } else {
-//         next();
-//     }
-// };
+const alreadySigned = function(req, res, next) {
+    if (!req.session.signatureId) {
+        res.redirect("/petition");
+    } else {
+        next();
+    }
+};
+
+const requireUser = function(req, res, next) {
+    if (!req.session.user) {
+        res.redirect("/register");
+    } else {
+        next();
+    }
+};
 
 // end MIDDLEWARE
 
@@ -78,14 +81,13 @@ app.get("/login", (req, res) => {
     }
 });
 
-app.get("/profile", (req, res) => {
+app.get("/profile", requireUser, (req, res) => {
     res.render("profile", {
         layout: "layouts"
     });
 });
 
-//alreadySigned
-app.get("/petition", (req, res) => {
+app.get("/petition", requireUser, (req, res) => {
     if (req.session.signatureId) {
         res.redirect("/thankyou");
         return;
@@ -94,8 +96,9 @@ app.get("/petition", (req, res) => {
         layout: "layouts"
     });
 });
-
-app.get("/thankyou", (req, res) => {
+//alreadySigned
+app.get("/thankyou", requireUser, alreadySigned, (req, res) => {
+    console.log("THANKSSSSSS");
     getSignatureById(req.session.signatureId).then(results => {
         signersCount().then(count => {
             res.render("thankyou-page", {
@@ -107,9 +110,8 @@ app.get("/thankyou", (req, res) => {
     });
 });
 
-app.get("/profile/edit", (req, res) => {
+app.get("/profile/edit", requireUser, (req, res) => {
     populateUpdateUserData(req.session.user.id).then(results => {
-        console.log("results popPPPPPPP", results);
         res.render("profileEdit", {
             layout: "layouts",
             firstname: results.first_name,
@@ -123,7 +125,7 @@ app.get("/profile/edit", (req, res) => {
     });
 });
 
-app.get("/signers", (req, res) => {
+app.get("/signers", requireUser, alreadySigned, (req, res) => {
     signersNames().then(results => {
         res.render("signerslist", {
             layout: "layouts",
@@ -140,6 +142,14 @@ app.get("/signers/:city", (req, res) => {
             signerslist: results
         });
     });
+});
+
+app.get("/logout", (req, res) => {
+    req.session = null;
+    res.render("logout", {
+        layout: "layouts"
+    });
+    //res.redirect("/login");
 });
 
 app.post("/register", (req, res) => {
@@ -223,7 +233,6 @@ app.post("/profile/edit", (req, res) => {
         userId
     ) {
         if (passwordInput) {
-            console.log("new pass word detected");
             const hashPassUpdate = hashPassword(passwordInput);
             return hashPassUpdate.then(hashPassUpdate => {
                 return updateUserTableWithPassword(
@@ -235,7 +244,6 @@ app.post("/profile/edit", (req, res) => {
                 );
             });
         } else {
-            console.log("no new passsss");
             return updateUserTableWithoutPassword(
                 firstNameInput,
                 lastNameInput,
@@ -287,15 +295,18 @@ app.post("/login", (req, res) => {
                     doesMatch
                 ) {
                     if (doesMatch) {
+                        console.log("logingggggg", req.body.email);
                         getUserData(req.body.email).then(function(userData) {
+                            console.log(userData);
                             req.session.user = {
-                                id: userData.id,
+                                id: userData.userid,
                                 firstname: userData.firstname,
                                 lastname: userData.lastname,
-                                email: userData.email
+                                email: userData.email,
+                                signature: userData.id
                             };
+                            res.redirect("/petition");
                         });
-                        res.redirect("/petition");
                     }
                 });
             }
@@ -323,6 +334,13 @@ app.post("/petition", (req, res) => {
                 });
             });
     }
+});
+
+app.post("/deleteSignature", (req, res) => {
+    deleteSignature(req.session.signatureId).then(() => {
+        req.session.signatureId = null;
+        res.redirect("/petition");
+    });
 });
 
 app.listen(8080, () => {

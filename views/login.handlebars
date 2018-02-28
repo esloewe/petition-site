@@ -9,7 +9,7 @@
         {{#if error2}}
         <h2>{{> errorNotaUser}}</h2>
         {{/if}}
-
+        <input type="hidden" name="_csrf" value="{{csrfToken}}">
         <input type="text" placeholder="email" name="email" value="">
         <input type="password" placeholder="password" name="password" value="">
         <button id= "login-button"> login </button>

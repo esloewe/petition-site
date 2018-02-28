@@ -4,6 +4,9 @@
     <div class="signers-link">
         <h2><a href="/signers"> see all {{totalSigners}} signers </a></h2>
         <h2><a href="/profile/edit">edit your profile</a></h2>
+        <form method="POST" action="/deleteSignature" >
+            <button> delete signature</button>
+        </form>
     </div>
     {{> logoutButton}}
 </div>
