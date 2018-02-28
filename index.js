@@ -245,83 +245,29 @@ app.post("/profile/edit", (req, res) => {
         }
     }
     Promise.all([
-        updateUser(firstname, lastname, email, password, req.session.user.id),
+        updateUser(
+            firstname,
+            lastname,
+            email,
+            password,
+            req.session.user.id
+        ).catch(error => {
+            console.log("error in update user promise");
+            throw error;
+        }),
         userDataUpdateByUserinUsersProfiles(
             age,
             city,
             homepage,
             req.session.user.id
-        )
-    ])
-        .then(() => {
-            console.log(" we are here woah!");
+        ).catch(error => {
+            console.log("error in update user PROFILE promise");
+            throw error;
         })
-        .catch(error => {
-            console.log(error);
-            res.render("profileEdit", {
-                layout: "layouts",
-                error: "error"
-            });
-        });
+    ]).then(function() {
+        res.redirect("/thankyou");
+    });
 });
-// Promise.all([
-//     updateUserTableWithPassword(
-//         firstname,
-//         lastname,
-//         email,
-//         hashPassUpdate,
-//         req.session.user.id
-//     ),
-//     updateUserTableWithoutPassword(
-//         firstname,
-//         lastname,
-//         email,
-//         req.session.user.id
-//     )
-// ])
-//     .then(() => {
-//         userDataUpdateByUserinUsersProfiles(
-//        age,
-//             req.body.city,
-//             req.body.homepage,
-//             req.session.user.id
-//         );
-//     })
-//     .then(function() {
-//         res.redirect("/thankyou");
-//     });
-
-//
-//
-//     if (req.body.password === "") {
-//         updateUserTableWithoutPassword(
-//         req.body.firstname,
-//         req.body.lastname,
-//         req.body.email,
-//         req.session.user.id).then(function(){
-//             userDataUpdateByUserinUsersProfiles(req.body.age, req.body.city, req.body.homepage, req.session.user.id).then(function(){
-//             res
-//             })
-//
-//
-//         })
-//         // user did not enter password
-//         // do update to users table without updating password with the new query that i will make but without the password
-//     } else {
-//         // user entered password, bro
-//         // hash first, then
-//         // in the then of hash i pass hash down though a promise do update to users table with password, bro
-//         userDataUpdateByUserinUsers(
-//             req.body.firstname,
-//             req.body.lastname,
-//             req.body.email,
-//             INEEDAHASHHERE!!!,
-//             req.session.user.id
-//         ).then(function() {});
-//     }
-//
-//     // res.redirect("/thankyou");
-// });
 
 app.post("/login", (req, res) => {
     if (!req.body.email || !req.body.password) {

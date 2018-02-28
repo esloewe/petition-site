@@ -113,7 +113,7 @@ exports.updateUserTableWithPassword = function(
     return db
         .query(
             `UPDATE users
-             SET (first_name = $1, last_name = $2, email = $3, password_hash = $4) WHERE user_id = $5`,
+             SET first_name = $1, last_name = $2, email = $3, password_hash = $4 WHERE id = $5`,
             [first_name, last_name, email, password_hash, id]
         )
         .then(function(results) {
@@ -129,8 +129,7 @@ exports.updateUserTableWithoutPassword = function(
 ) {
     return db
         .query(
-            `UPDATE users
-             SET (first_name = $1, last_name = $2, email = $3, password_hash = $4) WHERE user_id = $5`,
+            "UPDATE users SET first_name = $1, last_name = $2, email = $3 WHERE id = $4",
             [first_name, last_name, email, id]
         )
         .then(function(results) {
@@ -148,11 +147,14 @@ exports.userDataUpdateByUserinUsersProfiles = function(
         .query(
             `INSERT INTO users_profiles (age, city, homepage, user_id) VALUES ($1, $2, $3, $4)
             ON CONFLICT (user_id)
-            DO UPDATE SET age = $1, city = $2, homepage = $3
-            WHERE user_id = $4`,
+            DO UPDATE SET age = $1, city = $2, homepage = $3`,
             [age, city, homepage, user_id]
         )
         .then(function(results) {
             return results.rows[0];
+        })
+        .catch(error => {
+            console.log("EEEERRRROOORRR");
+            console.log(error);
         });
 };
