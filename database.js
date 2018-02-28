@@ -1,6 +1,6 @@
 var spicedPg = require("spiced-pg");
 
-var db = spicedPg("postgres:postgres:postgres@localhost:5432/petition");
+var db = spicedPg("postgres:postgres:postgres@localhost:5432/petition"); // this need sto change for heroku by adding proccess.env.DATABASE_URL  || the one i already have
 
 exports.insertNewSignature = function(userId, signature) {
     return db
@@ -89,10 +89,14 @@ exports.getUserProfile = function(age, city, homepage, user_id) {
         });
 };
 
-exports.populateUpdateUserData = function() {
+exports.populateUpdateUserData = function(id) {
     return db
         .query(
-            "SELECT users.first_name, users.last_name, users.password_hash, users.email, users_profiles.city, users_profiles.age, users_profiles.homepage FROM users JOIN users_profiles ON users.id = users_profiles.id ORDER BY users.first_name ASC"
+            `SELECT users.first_name, users.last_name, users.email, users_profiles.city, users_profiles.age, users_profiles.homepage
+            FROM users JOIN users_profiles
+            ON users.id = users_profiles.user_id
+            WHERE users.id = $1`,
+            [id]
         )
         .then(function(results) {
             return results.rows[0];
@@ -109,7 +113,7 @@ exports.updateUserTableWithPassword = function(
     return db
         .query(
             `UPDATE users
-             SET (first_name = $1, last_name = $2, email = $3, password_hash = $4) WHERE id = $5`,
+             SET (first_name = $1, last_name = $2, email = $3, password_hash = $4) WHERE user_id = $5`,
             [first_name, last_name, email, password_hash, id]
         )
         .then(function(results) {
@@ -126,7 +130,7 @@ exports.updateUserTableWithoutPassword = function(
     return db
         .query(
             `UPDATE users
-             SET (first_name = $1, last_name = $2, email = $3, password_hash = $4) WHERE id = $5`,
+             SET (first_name = $1, last_name = $2, email = $3, password_hash = $4) WHERE user_id = $5`,
             [first_name, last_name, email, id]
         )
         .then(function(results) {

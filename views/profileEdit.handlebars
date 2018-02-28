@@ -3,10 +3,13 @@
 <div class="container-profile-edit">
     <h2 id="header-profile-edit">Edit your profile</h2>
     <form Method="POST" class="profile-input-edit">
+        {{#if error}}
+        <h2>{{> error-page}}</h2>
+        {{/if}}
         <input type="text" name="firstname" placeholder="firstname"value="{{firstname}}">
         <input type="text" name="lastname" placeholder="lastname"value="{{lastname}}">
         <input type="text" name="email" placeholder="email"value="{{email}}">
-        <input type="text" name="password" placeholder="password" value="">
+        <input type="password" name="password" placeholder="password" value="">
         <input type="text" name="age" placeholder="age"value="{{age}}">
         <input type="text" name="city" placeholder="city"value="{{city}}">
         <input type="url" name="homepage" placeholder="homepage"value="{{homepage}}">

@@ -5,6 +5,7 @@ const cookieParser = require("cookie-parser");
 const cookieSession = require("cookie-session");
 const handlebars = require("express-handlebars");
 const bcrypt = require("bcryptjs");
+const csrf = require("csurf");
 const { hashPassword, checkPassword } = require("./hashPass");
 const {
     insertNewSignature,
@@ -36,6 +37,8 @@ app.use(
         maxAge: 1000 * 60 * 60 * 24 * 14
     })
 );
+//app.use(csrf());
+//or use it as middleware let csrfProtection = csrf()
 
 app.use(express.static(__dirname + "/public"));
 
@@ -105,7 +108,7 @@ app.get("/thankyou", (req, res) => {
 });
 
 app.get("/profile/edit", (req, res) => {
-    populateUpdateUserData().then(results => {
+    populateUpdateUserData(req.session.user.id).then(results => {
         console.log("results popPPPPPPP", results);
         res.render("profileEdit", {
             layout: "layouts",
@@ -202,55 +205,91 @@ app.post("/profile", (req, res) => {
 });
 
 app.post("/profile/edit", (req, res) => {
-    function updateUser(firstname, lastname, email, password, id) {
-        if (req.body.password) {
-            const { firstname, lastname, email } = req.body;
-            const hashPassUpdate = hashPassword(req.body.password);
+    const {
+        firstname,
+        lastname,
+        email,
+        password,
+        age,
+        city,
+        homepage
+    } = req.body; // user input from form
+
+    function updateUser(
+        firstNameInput,
+        lastNameInput,
+        inputEmail,
+        passwordInput,
+        userId
+    ) {
+        if (passwordInput) {
+            console.log("new pass word detected");
+            const hashPassUpdate = hashPassword(passwordInput);
             return hashPassUpdate.then(hashPassUpdate => {
-                updateUserTableWithPassword(
-                    firstname,
-                    lastname,
-                    email,
+                return updateUserTableWithPassword(
+                    firstNameInput,
+                    lastNameInput,
+                    inputEmail,
                     hashPassUpdate,
-                    req.session.user.id
+                    userId
                 );
             });
         } else {
+            console.log("no new passsss");
             return updateUserTableWithoutPassword(
-                firstname,
-                lastname,
-                email,
-                req.session.user.id
+                firstNameInput,
+                lastNameInput,
+                inputEmail,
+                userId
             );
         }
     }
     Promise.all([
-        updateUserTableWithPassword(
-            firstname,
-            lastname,
-            email,
-            hashPassUpdate,
-            req.session.user.id
-        ),
-        updateUserTableWithoutPassword(
-            firstname,
-            lastname,
-            email,
+        updateUser(firstname, lastname, email, password, req.session.user.id),
+        userDataUpdateByUserinUsersProfiles(
+            age,
+            city,
+            homepage,
             req.session.user.id
         )
     ])
         .then(() => {
-            userDataUpdateByUserinUsersProfiles(
-                req.body.age,
-                req.body.city,
-                req.body.homepage,
-                req.session.user.id
-            );
+            console.log(" we are here woah!");
         })
-        .then(function() {
-            res.redirect("/thankyou");
+        .catch(error => {
+            console.log(error);
+            res.render("profileEdit", {
+                layout: "layouts",
+                error: "error"
+            });
         });
 });
+// Promise.all([
+//     updateUserTableWithPassword(
+//         firstname,
+//         lastname,
+//         email,
+//         hashPassUpdate,
+//         req.session.user.id
+//     ),
+//     updateUserTableWithoutPassword(
+//         firstname,
+//         lastname,
+//         email,
+//         req.session.user.id
+//     )
+// ])
+//     .then(() => {
+//         userDataUpdateByUserinUsersProfiles(
+//        age,
+//             req.body.city,
+//             req.body.homepage,
+//             req.session.user.id
+//         );
+//     })
+//     .then(function() {
+//         res.redirect("/thankyou");
+//     });
 
 //
 //
