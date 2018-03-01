@@ -7,8 +7,6 @@ var canvasDataSave = $("#canvasDataSave");
 var x; //current position mouse
 var y;
 
-//var submit = $("submit");
-
 petitionSignClick.on("click", e => {
     console.log("petition sign working");
     canvasDataSave.val(signatureCanvas[0].toDataURL());
@@ -21,8 +19,6 @@ signatureCanvas.on("mousedown", e => {
     y = e.offsetY; ///e.touches[0].pageY mobile
 });
 
-e.touches[0].pageX - canvasPosition.left;
-e.touches[0].pageY - canvasPosition.top;
 signatureCanvas.on("mouseup", () => {
     signing = false;
 });
