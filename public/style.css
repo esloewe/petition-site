@@ -93,12 +93,11 @@ small {
 
 .header-login {
     font-family: "Open Sans", sans-serif;
+    justify-self: center;
     font-size: 36px;
 }
 .user-input-login {
-    width: 300px;
-    margin-left: 90px;
-    align-self: center;
+    justify-self: center;
     font-family: "Open Sans", sans-serif;
 }
 
@@ -135,14 +134,13 @@ form {
 
 .register-title2 {
     grid-area: register-title2;
-    text-align: center;
+    justify-self: center;
     font: 22px "Open Sans", sans-serif;
 }
 
 .user-input-register {
     grid-area: user-input-register;
-    margin-top: 50px;
-    margin-left: 320px;
+    justify-self: center;
     font-family: "Open Sans", sans-serif;
 }
 
@@ -163,11 +161,24 @@ form {
     display: grid;
     justify-content: center;
     align-items: center;
+    grid-template-areas:
+        "title-profile"
+        "user-input-profile";
+}
+.profile-input {
+    grid-area: user-input-profile;
+    font-family: "Open Sans", sans-serif;
+    justify-self: center;
 }
 
 #header-profile {
     font-family: "Open Sans", sans-serif;
     font-size: 59px;
+    grid-area: title-profile;
+}
+.logout-button-profile {
+    grid-area: footer-profile;
+    justify-self: center;
 }
 
 /* profile edit page */
@@ -267,3 +278,8 @@ form {
     font-size: 16px;
     text-align: center;
 }
+
+/* logout button */
+/* .logout-button {
+    justify-self: center;
+} */

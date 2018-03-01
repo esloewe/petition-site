@@ -63,6 +63,10 @@ const requireUser = function(req, res, next) {
 
 // end MIDDLEWARE
 
+app.get("/", (req, res) => {
+    res.redirect("/register");
+});
+
 app.get("/register", (req, res) => {
     res.render("registration", {
         layout: "layouts"
