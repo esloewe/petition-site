@@ -34,7 +34,7 @@ app.use(cookieParser());
 
 app.use(
     cookieSession({
-        secret: "nosecret",
+        secret: process.env.SECRET || require("./secrets.json").secret,
         maxAge: 1000 * 60 * 60 * 24 * 14
     })
 );
@@ -63,17 +63,15 @@ const requireUser = function(req, res, next) {
 
 // end MIDDLEWARE
 
-//checkIfLoggedIn
 app.get("/register", (req, res) => {
     res.render("registration", {
         layout: "layouts"
     });
 });
 
-//checkIfLoggedIn
 app.get("/login", (req, res) => {
     if (req.session.user) {
-        res.redirect("/petition");
+        res.redirect("/petition"); //double check this redirect page
     } else {
         res.render("login", {
             layout: "layouts"
@@ -92,11 +90,11 @@ app.get("/petition", requireUser, (req, res) => {
         res.redirect("/thankyou");
         return;
     }
-    res.render("main", {
+    res.render("petition", {
         layout: "layouts"
     });
 });
-//alreadySigned
+
 app.get("/thankyou", requireUser, alreadySigned, (req, res) => {
     console.log("THANKSSSSSS");
     getSignatureById(req.session.signatureId).then(results => {
@@ -288,26 +286,26 @@ app.post("/login", (req, res) => {
             if (!hashed) {
                 res.render("login", {
                     layouts: "layouts",
-                    error2: "error"
+                    error2: "error2"
                 });
             } else {
                 checkPassword(req.body.password, hashed).then(function(
                     doesMatch
                 ) {
                     if (doesMatch) {
-                        console.log("logingggggg", req.body.email);
                         getUserData(req.body.email).then(function(userData) {
-                            console.log(userData);
                             req.session.user = {
                                 id: userData.userid,
                                 firstname: userData.firstname,
                                 lastname: userData.lastname,
                                 email: userData.email,
                                 signature: userData.id
+                                //(req.session.signatureId =
+                                //userData.id)
                             };
-                            res.redirect("/petition");
+                            res.redirect("/petition"); // changed this from petition to thank you // testing
                         });
-                    }
+                    } ///do else here with res. render error
                 });
             }
         });
@@ -316,7 +314,7 @@ app.post("/login", (req, res) => {
 
 app.post("/petition", (req, res) => {
     if (!req.body.signature) {
-        res.render("main", {
+        res.render("petition", {
             layout: "layouts",
             error: "error"
         });
@@ -328,7 +326,7 @@ app.post("/petition", (req, res) => {
             })
             .catch(function(error) {
                 console.log(error);
-                res.render("main", {
+                res.render("petition", {
                     layout: "layouts",
                     error: "error"
                 });
@@ -343,6 +341,6 @@ app.post("/deleteSignature", (req, res) => {
     });
 });
 
-app.listen(8080, () => {
+app.listen(process.env.PORT || 8080, () => {
     console.log("listening");
 });

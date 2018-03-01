@@ -7,14 +7,21 @@
         {{/if}}
     <form Method="POST" class="profile-input-edit">
         <input type="hidden" name="_csrf" value="{{csrfToken}}">
+        First name:<br>
         <input type="text" name="firstname" placeholder="firstname"value="{{firstname}}">
+        Last name:<br>
         <input type="text" name="lastname" placeholder="lastname"value="{{lastname}}">
+        Email:<br>
         <input type="text" name="email" placeholder="email"value="{{email}}">
+        Password:<br>
         <input type="password" name="password" placeholder="password" value="">
+        Age:<br>
         <input type="text" name="age" placeholder="age"value="{{age}}">
+        City:<br>
         <input type="text" name="city" placeholder="city"value="{{city}}">
+        Homepage:<br>
         <input type="url" name="homepage" placeholder="homepage"value="{{homepage}}">
-        <button>update</button>
-        {{> logoutButton}}
+        <button id="update-button">update</button>
     </form>
+    {{> logoutButton}}
 </div>

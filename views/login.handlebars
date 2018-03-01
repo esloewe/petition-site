@@ -10,8 +10,10 @@
         <h2>{{> errorNotaUser}}</h2>
         {{/if}}
         <input type="hidden" name="_csrf" value="{{csrfToken}}">
-        <input type="text" placeholder="email" name="email" value="">
-        <input type="password" placeholder="password" name="password" value="">
+        Email:<br>
+        <input type="text" placeholder="email" name="email" value=""><br>
+        Password:<br>
+        <input type="password" placeholder="password" name="password" value=""><br>
         <button id= "login-button"> login </button>
     </form>
 </div>

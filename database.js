@@ -1,6 +1,9 @@
 var spicedPg = require("spiced-pg");
 
-var db = spicedPg("postgres:postgres:postgres@localhost:5432/petition"); // this need sto change for heroku by adding proccess.env.DATABASE_URL  || the one i already have
+var db = spicedPg(
+    process.env.DATABASE_URL ||
+        "postgres:postgres:postgres@localhost:5432/petition"
+); // this need sto change for heroku by adding proccess.env.DATABASE_URL  || the one i already have
 
 exports.insertNewSignature = function(userId, signature) {
     return db

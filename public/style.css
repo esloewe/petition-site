@@ -99,10 +99,17 @@ small {
     width: 300px;
     margin-left: 90px;
     align-self: center;
+    font-family: "Open Sans", sans-serif;
 }
 
 form:focus,
 input:focus {
+    color: black;
+}
+
+input,
+select,
+form {
     color: black;
 }
 
@@ -134,10 +141,9 @@ input:focus {
 
 .user-input-register {
     grid-area: user-input-register;
-    width: 200px;
-    height: 400px;
     margin-top: 50px;
-    margin-left: 400px;
+    margin-left: 320px;
+    font-family: "Open Sans", sans-serif;
 }
 
 .member {
@@ -164,6 +170,24 @@ input:focus {
     font-size: 59px;
 }
 
+/* profile edit page */
+
+.profile-input-edit {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    font-family: "Open Sans", sans-serif;
+}
+
+#header-profile-edit {
+    font: 32px "Open Sans", sans-serif;
+    text-align: center;
+    font-weight: bold;
+}
+
+#update-button {
+    margin-left: 20px;
+}
 /* signers list page */
 
 .container-signers {
@@ -203,10 +227,10 @@ input:focus {
 
 .h1-thankyou {
     text-transform: uppercase;
-    font: 56px "Kanit", sans-serif;
+    font: 60px "Kanit", sans-serif;
     font-weight: bold;
     /* margin-left: 25px; */
-    margin-top: 60px;
+    margin-top: 100px;
 }
 
 .signers-link {

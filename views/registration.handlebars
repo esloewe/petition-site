@@ -1,16 +1,21 @@
 <div class="container-register">
     <h1 class='main-title'>Tell me more about my clothes...</h1>
     <h2 class='register-title2'>a petition for change, transparency and awareness in the fashion business. Join the revolution.</h2>
-    {{#if error}}
-    <h2>{{> error-page}}</h2>
-    {{/if}}
+
     <form Method="POST" class="user-input-register">
+        {{#if error}}
+        <h2>{{> error-page}}</h2>
+        {{/if}}
         <input type="hidden" name="_csrf" value="{{csrfToken}}">
-        <input type="text" name="firstname" placeholder="First Name"value="">
-        <input type="text" name="lastname" placeholder="Last Name"value="">
-        <input type="text" placeholder="email" name="email" value="">
-        <input type="password" placeholder="password" name="password" value="">
+        First name:<br>
+        <input type="text" name="firstname" placeholder="First Name"value=""><br>
+        Last name:<br>
+        <input type="text" name="lastname" placeholder="Last Name"value=""><br>
+        Email:<br>
+        <input type="text" placeholder="email" name="email" value=""><br>
+        Password:<br>
+        <input type="password" placeholder="password" name="password" value=""><br>
         <button id= "sign-up"> sign up </button>
-        <h4 class="member"> are you already a member? please login  <a href="/login">here</a> </h4>
+        <h4 class="member"> are you already a member?<br> please login  <a href="/login">here</a> </h4>
     </form>
 </div>

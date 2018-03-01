@@ -4,9 +4,12 @@
     <h2 id="header-profile">Please tells us a little bit more about yourself</h2>
     <form Method="POST" class="profile-input">
         <input type="hidden" name="_csrf" value="{{csrfToken}}">
-        <input type="text" name="age" placeholder="age"value="">
-        <input type="text" name="city" placeholder="city"value="">
-        <input type="url" name="homepage" placeholder="homepage"value="">
+        Age:<br>
+        <input type="text" name="age" placeholder="age"value=""><br>
+        City:<br>
+        <input type="text" name="city" placeholder="city"value=""><br>
+        Homepage:<br>
+        <input type="url" name="homepage" placeholder="homepage"value=""><br>
         <button>continue</button>
     </form>
     {{> logoutButton}}
