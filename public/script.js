@@ -43,6 +43,7 @@ signatureCanvas.on("touchstart", e => {
     signing = true;
     x = e.touches[0].pageX - canvasPositionMobile.left;
     y = e.touches[0].pageY - canvasPositionMobile.top;
+    e.preventDefault();
 });
 
 signatureCanvas.on("touchmove", e => {
@@ -58,5 +59,6 @@ signatureCanvas.on("touchmove", e => {
         context.stroke();
         x = e.touches[0].pageX - canvasPositionMobile.left; // creates an ongoing recording of the movement
         y = e.touches[0].pageY - canvasPositionMobile.top;
+        e.preventDefault();
     }
 });

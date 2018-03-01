@@ -302,11 +302,9 @@ app.post("/login", (req, res) => {
                                 id: userData.userid,
                                 firstname: userData.firstname,
                                 lastname: userData.lastname,
-                                email: userData.email,
-                                signature: userData.id
-                                //(req.session.signatureId =
-                                //userData.id)
+                                email: userData.email
                             };
+                            req.session.signatureId = userData.id;
                             res.redirect("/petition"); // changed this from petition to thank you // testing
                         });
                     } ///do else here with res. render error
