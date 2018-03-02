@@ -33,7 +33,7 @@ exports.signersCount = function() {
 exports.signersNames = function() {
     return db
         .query(
-            "SELECT users.first_name, users.last_name, users_profiles.city, users_profiles.age, users_profiles.homepage FROM users INNER JOIN users_profiles ON users.id = users_profiles.id  ORDER BY users.first_name ASC"
+            "SELECT users.first_name, users.last_name, users_profiles.city, users_profiles.age, users_profiles.homepage FROM signatures LEFT JOIN users ON users.id = signatures.user_id LEFT JOIN users_profiles ON users.id = users_profiles.user_id"
         )
         .then(function(results) {
             return results.rows;

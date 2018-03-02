@@ -1,0 +1,17 @@
+
+<div class="menubar">
+    <a class="home" href="/thankyou">Home</a>
+    <a class="profile" href="#">Profile</a>
+    <!-- <button class="profile">Profile </button> -->
+
+        <ul class="menubar-ul">
+            <li><a class="list-item" href="/profile/edit">edit profile</a></li>
+            <li><form class="list-item2" method="POST" action="/deleteSignature" >
+                <input type="hidden" name="_csrf" value="{{csrfToken}}">
+                <button class="delete-signature"> delete signature</button>
+            </form></li>
+            <li class="list-item2 list-item2-button">{{> logoutButton}}</li>
+        </ul>
+</div>
+
+<h1 class='main-title-thanks'>Tell me more about my clothes...</h1>

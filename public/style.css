@@ -30,7 +30,6 @@ body {
     grid-area: main-paragraph;
     font-family: "Open Sans", sans-serif;
     font-size: 20px;
-    max-width: 600px;
     margin-left: 40px;
     align-items: center;
     justify-content: center;
@@ -83,6 +82,11 @@ small {
     font-family: "Open Sans", sans-serif;
 }
 
+#fast-fashion,
+#loop {
+    text-decoration: none;
+}
+
 /* login page */
 
 .container-login {
@@ -122,8 +126,6 @@ form {
     display: grid;
     grid-template-columns: auto;
     grid-template-rows: auto;
-    /* margin-left: 180px;
-    margin-top: 50px; */
     justify-content: center;
     align-items: center;
     grid-template-areas:
@@ -220,34 +222,29 @@ form {
     margin-left: 30px;
 }
 
-.main-title-in-signers {
-    text-transform: uppercase;
-    font: 56px "Kanit", sans-serif;
-    font-weight: bold;
-    margin-left: 25px;
-    margin-top: 60px;
-}
-
 /* thankyou page */
 
 .container-thankyou-page {
     display: grid;
-    justify-content: center;
-    align-items: center;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-columns: 1fr;
 }
 
 .h1-thankyou {
     text-transform: uppercase;
     font: 60px "Kanit", sans-serif;
     font-weight: bold;
-    /* margin-left: 25px; */
-    margin-top: 100px;
 }
 
 .signers-link {
     font-family: "Open Sans", sans-serif;
     font-size: 16px;
-    /* margin-left: 30px; */
+}
+
+.menubar ul {
+    grid-area: menubar;
+    list-style: none;
+    display: none;
 }
 
 /* errors */
@@ -279,7 +276,151 @@ form {
     text-align: center;
 }
 
-/* logout button */
-/* .logout-button {
-    justify-self: center;
-} */
+/* nav */
+.main-title-thanks {
+    font: 56px "Kanit", sans-serif;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.home {
+    text-decoration: none;
+    font-family: "Open Sans", sans-serif;
+    font-size: 24px;
+    letter-spacing: 2px;
+    font-weight: bold;
+    margin-right: 40px;
+    color: #ff00ff;
+}
+
+.profile {
+    text-decoration: none;
+    font-family: "Open Sans", sans-serif;
+    font-size: 24px;
+    padding-bottom: -20px;
+    letter-spacing: 2px;
+    font-weight: bold;
+    margin-right: 40px;
+    color: black;
+}
+.menubar {
+    grid-column: 1 / span 3;
+    grid-row: 1;
+    height: 40px;
+    text-align: right;
+    position: relative;
+    border: 1px solid transparent;
+    padding: 10px;
+    box-shadow: 0px 1px 2px #888888;
+}
+
+.list-item {
+    text-decoration: none;
+    font-family: "Open Sans", sans-serif;
+    font-size: 22px;
+}
+.list-item2 {
+    font-family: "Open Sans", sans-serif;
+    font-size: 22px;
+}
+
+.list-item2-button {
+}
+.delete-signature {
+    width: 200px;
+    margin-left: -33px;
+}
+.menubar button {
+    background-color: white;
+    color: black;
+}
+
+.menubar-ul {
+    border: 1px solid black;
+    width: 200px;
+    text-align: left;
+    position: absolute;
+    right: 0;
+    z-index: 100;
+    background-color: white;
+}
+
+/* MOBILE */
+
+/* register page */
+@media screen and (max-width: 600px) {
+    .container-register {
+        display: grid;
+    }
+    .register-title2 {
+        display: grid;
+        margin-left: 14px;
+        margin-right: 3px;
+        margin-bottom: 40px;
+        padding: 16px;
+    }
+
+    .main-title {
+        font: 50px "Kanit", sans-serif;
+        margin-top: 14px;
+        margin-right: 7px;
+        margin-left: 9px;
+        padding: 5px;
+    }
+}
+
+/* petition page */
+
+@media screen and (max-width: 600px) {
+    .container {
+        display: grid;
+        grid-template-columns: 1fr;
+        margin-left: 5px;
+        margin-top: 5px;
+        margin-right: 5px;
+        grid-template-areas:
+            "main-title"
+            "main-paragraph"
+            "user-input";
+    }
+
+    .main-paragraph {
+        grid-area: main-paragraph;
+        font-size: 14px;
+        padding: 10px;
+        margin-top: 5px;
+        margin-left: -5px;
+    }
+
+    .main-title {
+        grid-area: main-title;
+        font: 50px "Kanit", sans-serif;
+        margin-top: 14px;
+        margin-right: 7px;
+        margin-left: 9px;
+        padding: 5px;
+    }
+
+    user-input-petition {
+        grid-area: user-input;
+    }
+}
+
+/* profile page */
+
+@media screen and (max-width: 600px) {
+    #header-profile {
+        font-family: "Open Sans", sans-serif;
+        font-size: 30px;
+        padding: 5px;
+        margin-top: 80px;
+    }
+}
+
+/* input border */
+@media screen and (max-width: 600px) {
+    input {
+        width: 300px;
+        border: 0.8px solid #c2c2c2;
+    }
+}

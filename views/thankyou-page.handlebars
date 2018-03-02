@@ -1,14 +1,15 @@
+{{> menuBar}}
+
+
 <div class="container-thankyou-page">
-    <h1 class='h1-thankyou'>Thank you!</h1>
+    <h3 class='h1-thankyou'>Thank you!</h3>
 
     <img src={{yourSignature}} alt="">
     <div class="signers-link">
         <h2><a href="/signers"> see all {{totalSigners}} signers </a></h2>
-        <h2><a href="/profile/edit">edit your profile</a></h2>
-        <form method="POST" action="/deleteSignature" >
-            <input type="hidden" name="_csrf" value="{{csrfToken}}">
-            <button> delete signature</button>
-        </form>
     </div>
-    {{> logoutButton}}
+
+
 </div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="/scriptProfile.js"></script>

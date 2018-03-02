@@ -1,7 +1,6 @@
-
+{{> menuBar}}
 
 <div class="container-signers">
-    <h1 class='main-title-in-signers'>Tell me more about my clothes...</h1>
     <h2 class='signers-title'>The change makers</h2>
     {{#signerslist}}
         <h3 class='list-signers'>{{first_name}} {{last_name}}  ({{age}}, <a href="/signers/{{city}}">{{city}}</a>)</h3>
@@ -9,3 +8,5 @@
 
     {{> logoutButton}}
 </div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="/scriptSignerPage.js"></script>
