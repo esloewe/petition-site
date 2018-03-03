@@ -1,17 +1,24 @@
 
 <div class="menubar">
-    <a class="home" href="/thankyou">Home</a>
-    <a class="profile" href="#">Profile</a>
+    <div class="all-links">
+        <a class="home" href="/thankyou">Home</a>
+        <a class="the-tag" href="/tag">The Tag</a>
+        <i class="material-icons">keyboard_arrow_down</i><a class="profile" href="#">Profile</a>
     <!-- <button class="profile">Profile </button> -->
+    </div>
 
-        <ul class="menubar-ul">
-            <li><a class="list-item" href="/profile/edit">edit profile</a></li>
-            <li><form class="list-item2" method="POST" action="/deleteSignature" >
+        <div class="menubar-ul">
+            <div><a class="list-item" href="/profile/edit">edit profile</a></div>
+            <div>
+                <form class="list-item2" method="POST" action="/deleteSignature" >
                 <input type="hidden" name="_csrf" value="{{csrfToken}}">
-                <button class="delete-signature"> delete signature</button>
-            </form></li>
-            <li class="list-item2 list-item2-button">{{> logoutButton}}</li>
-        </ul>
+                <button class="delete-signature">delete signature</button>
+                </form>
+                <div class="list-item2-button">{{> logoutButton}}</div>
+
+            </div>
+
+        </div>
 </div>
 
 <h1 class='main-title-thanks'>Tell me more about my clothes...</h1>

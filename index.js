@@ -67,6 +67,12 @@ app.get("/", (req, res) => {
     res.redirect("/register");
 });
 
+app.get("/tag", (req, res) => {
+    res.render("tagPage", {
+        layout: "layouts"
+    });
+});
+
 app.get("/register", (req, res) => {
     res.render("registration", {
         layout: "layouts"

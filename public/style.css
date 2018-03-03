@@ -6,13 +6,15 @@ body {
 
 .container {
     display: grid;
+    overflow: hidden;
     grid-template-columns: 1fr 1fr;
     margin-left: 180px;
     margin-top: 50px;
     height: 100%;
     grid-template-areas:
         "main-title main-title"
-        "main-paragraph user-input";
+        "main-paragraph user-input"
+        "tag-image tag-image";
 }
 
 .main-title {
@@ -49,13 +51,20 @@ input {
     width: 200px;
     margin-bottom: 14px;
     font-size: 20px;
-    color: #afafaf;
+    color: #e3e5e6;
 }
 
 canvas {
     background-color: white;
     margin-bottom: 30px;
     border: 2px dotted #afafaf;
+}
+
+.tag-image {
+    grid-area: tag-image;
+    width: 890px;
+    height: 700px;
+    margin-top: 30px;
 }
 
 button {
@@ -136,8 +145,10 @@ form {
 
 .register-title2 {
     grid-area: register-title2;
+    text-transform: uppercase;
     justify-self: center;
     font: 22px "Open Sans", sans-serif;
+    margin-bottom: 70px;
 }
 
 .user-input-register {
@@ -193,13 +204,15 @@ form {
 }
 
 #header-profile-edit {
-    font: 32px "Open Sans", sans-serif;
+    font: 22px "Open Sans", sans-serif;
     text-align: center;
     font-weight: bold;
 }
 
 #update-button {
     margin-left: 20px;
+    margin-bottom: 50px;
+    margin-top: 5px;
 }
 /* signers list page */
 
@@ -231,20 +244,20 @@ form {
 }
 
 .h1-thankyou {
-    text-transform: uppercase;
-    font: 60px "Kanit", sans-serif;
+    font: 40px "Open Sans", sans-serif;
     font-weight: bold;
+    text-align: center;
+}
+
+.signature-thankyou {
+    border: 2px dotted #afafaf;
+    justify-self: center;
 }
 
 .signers-link {
     font-family: "Open Sans", sans-serif;
     font-size: 16px;
-}
-
-.menubar ul {
-    grid-area: menubar;
-    list-style: none;
-    display: none;
+    text-align: center;
 }
 
 /* errors */
@@ -258,6 +271,13 @@ form {
     font-family: "Roboto Mono", monospace;
 }
 
+/* tagPage */
+
+.tag-tag-page {
+    width: 1300px;
+    height: 900px;
+    margin-left: 100px;
+}
 /* logout */
 
 .container-logout {
@@ -303,6 +323,17 @@ form {
     margin-right: 40px;
     color: black;
 }
+
+.the-tag {
+    text-decoration: none;
+    font-family: "Open Sans", sans-serif;
+    font-size: 24px;
+    padding-bottom: -20px;
+    letter-spacing: 2px;
+    font-weight: bold;
+    margin-right: 40px;
+    color: black;
+}
 .menubar {
     grid-column: 1 / span 3;
     grid-row: 1;
@@ -311,38 +342,68 @@ form {
     position: relative;
     border: 1px solid transparent;
     padding: 10px;
-    box-shadow: 0px 1px 2px #888888;
+    box-shadow: 0px 0.5px 0.5px #a4a4a4;
+    /* #888888 */
 }
 
 .list-item {
     text-decoration: none;
     font-family: "Open Sans", sans-serif;
-    font-size: 22px;
+    font-size: 21px;
+    margin-left: 7px;
+    color: black;
 }
-.list-item2 {
+
+.list-item:hover {
+    font-weight: bold;
+}
+
+.delete-signature:hover {
+    font-weight: bold;
+}
+
+.logout-button-button:hover {
+    font-weight: bolder;
+}
+.delete-signature {
     font-family: "Open Sans", sans-serif;
-    font-size: 22px;
+    width: 200px;
+    margin-left: -8px;
+    font-size: 21px;
+    margin-left: 1px;
 }
 
 .list-item2-button {
-}
-.delete-signature {
-    width: 200px;
-    margin-left: -33px;
+    font-family: "Open Sans", sans-serif;
+    font-size: 21px;
 }
 .menubar button {
     background-color: white;
     color: black;
+    text-align: justify;
+}
+
+.logout-button-button {
+    font-size: 20px;
 }
 
 .menubar-ul {
     border: 1px solid black;
-    width: 200px;
+    width: 150px;
     text-align: left;
     position: absolute;
     right: 0;
     z-index: 100;
     background-color: white;
+    box-sizing: border-box;
+    list-style: none;
+    display: none;
+    overflow: hidden;
+    margin-top: 10px;
+}
+
+i {
+    margin-top: 10px;
 }
 
 /* MOBILE */
