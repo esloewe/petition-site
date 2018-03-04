@@ -51,7 +51,7 @@ input {
     width: 200px;
     margin-bottom: 14px;
     font-size: 20px;
-    color: #e3e5e6;
+    color: #f7f7ff;
 }
 
 canvas {
@@ -349,8 +349,7 @@ form {
     position: relative;
     border: 1px solid transparent;
     padding: 10px;
-    box-shadow: 0px 0.4px 0.4px #a4a4a4;
-    /* #888888 */
+    box-shadow: 0px 0px 0.4px #a4a4a4;
 }
 
 .list-item {
