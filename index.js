@@ -290,7 +290,7 @@ app.post("/login", (req, res) => {
             if (!hashed) {
                 res.render("login", {
                     layout: "layouts",
-                    error: "error"
+                    error2: "error2"
                 });
             } else {
                 checkPassword(req.body.password, hashed).then(function(
@@ -307,11 +307,11 @@ app.post("/login", (req, res) => {
                             req.session.signatureId = userData.id;
                             res.redirect("/petition");
                         });
-                    } else {
-                        res.render("login", {
-                            layout: "layouts",
-                            error: "error"
-                        });
+                        // } else {
+                        //     res.render("login", {
+                        //         layout: "layouts",
+                        //         error: "error"
+                        //     });
                     }
                 });
             }
