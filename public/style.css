@@ -8,7 +8,7 @@ body {
     display: grid;
     overflow: hidden;
     grid-template-columns: 1fr 1fr;
-    margin-left: 180px;
+    margin-left: 190px;
     margin-top: 50px;
     height: 100%;
     grid-template-areas:
@@ -24,7 +24,7 @@ body {
     font: 56px "Kanit", sans-serif;
     font-weight: bold;
     margin-left: 25px;
-    margin-top: 60px;
+    margin-top: 30px;
 }
 
 .main-paragraph {
@@ -62,9 +62,11 @@ canvas {
 
 .tag-image {
     grid-area: tag-image;
-    width: 890px;
+    width: 899px;
     height: 700px;
     margin-top: 30px;
+    margin-left: 20px;
+    margin-bottom: 16px;
 }
 
 button {
@@ -94,6 +96,8 @@ small {
 #fast-fashion,
 #loop {
     text-decoration: none;
+    font-weight: bold;
+    color: #3366bb;
 }
 
 /* login page */
@@ -250,7 +254,8 @@ form {
 }
 
 .signature-thankyou {
-    border: 2px dotted #afafaf;
+    border: 2px dotted #00ffff;
+    background-color: #f9f9f9;
     justify-self: center;
 }
 
@@ -258,6 +263,7 @@ form {
     font-family: "Open Sans", sans-serif;
     font-size: 16px;
     text-align: center;
+    color: #0645ad;
 }
 
 /* errors */
@@ -274,9 +280,10 @@ form {
 /* tagPage */
 
 .tag-tag-page {
-    width: 1300px;
-    height: 900px;
+    width: 1200px;
+    height: 920px;
     margin-left: 100px;
+    margin-bottom: 50px;
 }
 /* logout */
 
@@ -442,12 +449,13 @@ i {
         grid-template-areas:
             "main-title"
             "main-paragraph"
-            "user-input";
+            "user-input"
+            "tag-image";
     }
 
     .main-paragraph {
         grid-area: main-paragraph;
-        font-size: 14px;
+        font-size: 16px;
         padding: 10px;
         margin-top: 5px;
         margin-left: -5px;
@@ -465,6 +473,25 @@ i {
     user-input-petition {
         grid-area: user-input;
     }
+
+    .tag-image {
+        grid-area: tag-image;
+        width: 330px;
+        height: 290px;
+        margin-top: 30px;
+        padding: 3px;
+    }
+}
+
+/* tagPage */
+
+@media screen and (max-width: 600px) {
+    .tag-tag-page {
+        width: 350px;
+        height: 310px;
+        margin: auto;
+        margin-left: 5px;
+    }
 }
 
 /* profile page */
@@ -481,7 +508,75 @@ i {
 /* input border */
 @media screen and (max-width: 600px) {
     input {
-        width: 300px;
+        width: 260px;
         border: 0.8px solid #c2c2c2;
     }
+}
+
+/* nav */
+
+@media screen and (max-width: 600px) {
+    .main-title-thanks {
+        font: 34px "Kanit", sans-serif;
+        padding: 5px;
+    }
+
+    .home {
+        font-size: 20px;
+        margin-right: 10px;
+    }
+
+    .profile {
+        font-size: 20px;
+        margin-right: -5px;
+    }
+
+    .the-tag {
+        font-size: 20px;
+    }
+
+    .all-links {
+        margin: 5px;
+    }
+
+    .menubar-ul {
+        border: 1px solid black;
+        width: 300px;
+        text-align: left;
+        position: absolute;
+        right: 0;
+        z-index: 100;
+        background-color: white;
+        box-sizing: border-box;
+        list-style: none;
+        display: none;
+        overflow: hidden;
+        margin-top: 10px;
+    }
+
+    i {
+        margin-top: 10px;
+    }
+}
+
+/* signers list page */
+@media screen and (max-width: 600px) {
+    .container-signers {
+        margin-right: 20px;
+    }
+
+    .signers-title {
+    }
+
+    .list-signers {
+        font-size: 14px;
+    }
+}
+
+/* login page */
+
+@media screen and (max-width: 600px) {
+    /* .login-button {
+        margin-left: 40px;
+    }*/
 }

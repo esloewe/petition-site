@@ -106,7 +106,6 @@ app.get("/petition", requireUser, (req, res) => {
 });
 
 app.get("/thankyou", requireUser, alreadySigned, (req, res) => {
-    console.log("THANKSSSSSS");
     getSignatureById(req.session.signatureId).then(results => {
         signersCount().then(count => {
             res.render("thankyou-page", {
@@ -183,14 +182,11 @@ app.post("/register", (req, res) => {
                 );
             })
             .then(userId => {
-                console.log(userId);
                 req.session.user = {
                     id: userId,
                     firstname: req.body.firstname,
                     lastname: req.body.lastname
                 };
-
-                console.log(req.session);
                 res.redirect("/profile");
             })
             .catch(error => {
@@ -268,7 +264,6 @@ app.post("/profile/edit", (req, res) => {
             password,
             req.session.user.id
         ).catch(error => {
-            console.log("error in update user promise");
             throw error;
         }),
         userDataUpdateByUserinUsersProfiles(
@@ -277,7 +272,6 @@ app.post("/profile/edit", (req, res) => {
             homepage,
             req.session.user.id
         ).catch(error => {
-            console.log("error in update user PROFILE promise");
             throw error;
         })
     ]).then(function() {
@@ -295,8 +289,8 @@ app.post("/login", (req, res) => {
         checkForEmailAndGetHashedPass(req.body.email).then(function(hashed) {
             if (!hashed) {
                 res.render("login", {
-                    layouts: "layouts",
-                    error2: "error2"
+                    layout: "layouts",
+                    error: "error"
                 });
             } else {
                 checkPassword(req.body.password, hashed).then(function(
@@ -311,9 +305,14 @@ app.post("/login", (req, res) => {
                                 email: userData.email
                             };
                             req.session.signatureId = userData.id;
-                            res.redirect("/petition"); // changed this from petition to thank you // testing
+                            res.redirect("/petition");
                         });
-                    } ///do else here with res. render error
+                    } else {
+                        res.render("login", {
+                            layout: "layouts",
+                            error: "error"
+                        });
+                    }
                 });
             }
         });

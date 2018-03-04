@@ -6,4 +6,8 @@ profileClick.on("click", e => {
     e.preventDefault();
 });
 
-//listen click on document and another so that when i clicked
+$(document).on("click", e => {
+    if (!$(e.target).closest(profileClick).length) {
+        menubarUl.hide();
+    }
+});
