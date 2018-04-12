@@ -43,6 +43,12 @@ app.use(function(req, res, next) {
     res.locals.csrfToken = req.csrfToken();
     next();
 });
+
+app.use(function(req, res, next) {
+    res.cookie("mytoken", req.csrfToken());
+    next();
+});
+
 app.use(express.static(__dirname + "/public"));
 
 const alreadySigned = function(req, res, next) {
